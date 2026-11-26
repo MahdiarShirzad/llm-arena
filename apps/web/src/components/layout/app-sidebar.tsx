@@ -83,7 +83,7 @@ function NavList({
               className={cn(
                 "size-4 shrink-0 transition-colors",
                 active
-                  ? "text-highlight"
+                  ? "text-accent"
                   : "text-muted-foreground group-hover:text-foreground",
               )}
             />
