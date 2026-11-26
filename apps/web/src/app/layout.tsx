@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 
+import { AppShell } from "@/components/layout/app-shell";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -38,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
         <ThemeProvider>
           <TooltipProvider delayDuration={150}>
-            {children}
+            <AppShell>{children}</AppShell>
             <Toaster position="bottom-right" />
           </TooltipProvider>
         </ThemeProvider>
