@@ -12,8 +12,6 @@ import {
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const isDark = resolvedTheme !== "light";
-  const label = isDark ? "Switch to light theme" : "Switch to dark theme";
 
   return (
     <Tooltip>
@@ -22,14 +20,15 @@ export function ThemeToggle() {
           type="button"
           variant="ghost"
           size="icon-sm"
-          aria-label={label}
-          onClick={() => setTheme(isDark ? "light" : "dark")}
+          aria-label="Toggle color theme"
+          onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
           className="text-muted-foreground hover:bg-surface-2 hover:text-foreground"
         >
-          {isDark ? <SunIcon /> : <MoonIcon />}
+          <SunIcon className="hidden dark:block" />
+          <MoonIcon className="block dark:hidden" />
         </Button>
       </TooltipTrigger>
-      <TooltipContent side="bottom">{label}</TooltipContent>
+      <TooltipContent side="bottom">Toggle theme</TooltipContent>
     </Tooltip>
   );
 }

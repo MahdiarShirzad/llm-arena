@@ -3,7 +3,9 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 
 import { AppShell } from "@/components/layout/app-shell";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { InlineScript } from "@/components/shared/inline-script";
 import { Toaster } from "@/components/ui/sonner";
+import { themeInitScript } from "@/lib/theme-script";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
@@ -36,6 +38,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${inter.variable} ${jetbrainsMono.variable} h-full`}
     >
+      <head>
+        <InlineScript html={themeInitScript} />
+      </head>
       <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
         <ThemeProvider>
           <TooltipProvider delayDuration={150}>
