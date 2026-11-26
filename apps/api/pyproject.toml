@@ -1,0 +1,17 @@
+[project]
+name = "api"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.165.0",
+    "openai>=3.60.0",
+    "pydantic-settings>=2.16.3",
+    "python-dotenv>=1.2.4",
+    "tiktoken>=0.14.0",
+]
+
+[dependency-groups]
+dev = [
+    "ipykernel>=7.4.0",
+    "jupyter>=1.1.1",
+]
