@@ -169,10 +169,11 @@
   --error: #c8283d;
   --warning: #8a6400;
 
-  --model-openai: #6ee7a8;
-  --model-gemini: #9cc5d8;
-  --model-deepseek: #c4a7ff;
-  --model-ollama: #ffe66d;
+  /* Darker on light surfaces so dots, bars and chart lines stay legible. */
+  --model-openai: #0f8f5c;
+  --model-gemini: #2f7f9e;
+  --model-deepseek: #6b4fd8;
+  --model-ollama: #8a6400;
 
   --background: var(--bg);
   --foreground: var(--text);

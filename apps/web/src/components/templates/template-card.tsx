@@ -171,7 +171,7 @@ export function TemplateCard({
         <TagList tags={template.tags} />
       </div>
 
-      <p className="mx-4 mt-3 line-clamp-3 min-h-[3.6rem] rounded-lg border border-border/40 bg-background/40 px-3 py-2 font-mono text-[11px] leading-relaxed text-muted-foreground">
+      <p className="mx-4 mt-3 line-clamp-3 h-[4.35rem] overflow-hidden rounded-lg border border-border/40 bg-background/40 px-3 py-2 font-mono text-[11px] leading-relaxed text-muted-foreground">
         {template.systemPrompt}
       </p>
 

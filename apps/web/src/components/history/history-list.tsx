@@ -89,7 +89,7 @@ export function HistoryList({
 
   return (
     <>
-      <div className="hidden overflow-hidden rounded-xl border border-border/60 bg-surface/40 md:block">
+      <div className="hidden overflow-hidden rounded-xl border border-border/60 bg-surface/40 lg:block">
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
@@ -184,7 +184,7 @@ export function HistoryList({
         </div>
       </div>
 
-      <ul className="flex flex-col gap-2 md:hidden">
+      <ul className="flex flex-col gap-2 lg:hidden">
         {runs.map((run) => {
           const checked = selected.includes(run.id);
 
