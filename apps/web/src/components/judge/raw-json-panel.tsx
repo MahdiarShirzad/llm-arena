@@ -47,7 +47,7 @@ function highlightJson(source: string): ReactNode[] {
       );
     } else {
       nodes.push(
-        <span key={key++} className="text-steel">
+        <span key={key++} className="text-foreground/70">
           {match[0]}
         </span>,
       );
@@ -86,7 +86,10 @@ export function RawJsonPanel({
     >
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 sm:px-5">
         <div className="flex min-w-0 items-center gap-2">
-          <BracesIcon aria-hidden className="size-4 shrink-0 text-steel" />
+          <BracesIcon
+            aria-hidden
+            className="size-4 shrink-0 text-muted-foreground"
+          />
           <h2 className="text-sm font-medium text-foreground">
             Raw JSON output
           </h2>

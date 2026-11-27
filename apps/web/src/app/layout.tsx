@@ -22,13 +22,27 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+const description =
+  "Send one prompt to several models, watch them stream side by side, and let a judge pick the winner.";
+
 export const metadata: Metadata = {
+  applicationName: "LLM Arena",
   title: {
     default: "LLM Arena",
     template: "%s · LLM Arena",
   },
-  description:
-    "Send one prompt to several models, watch them stream side by side, and let a judge pick the winner.",
+  description,
+  openGraph: {
+    type: "website",
+    siteName: "LLM Arena",
+    title: "LLM Arena — compare models side by side",
+    description,
+  },
+  twitter: {
+    card: "summary",
+    title: "LLM Arena",
+    description,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

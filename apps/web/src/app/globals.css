@@ -157,7 +157,7 @@
   --surface-2: #eef6f2;
   --border: #d9e4e8;
   --text: #343434;
-  --text-muted: #5b7482;
+  --text-muted: #4f6672;
   --accent: #2f3061;
   --accent-hover: #25264d;
   --on-accent: #f7fff7;
@@ -165,9 +165,9 @@
   --highlight: #ffe66d;
   --on-highlight: #1b1c3a;
   --steel: #6ca6c1;
-  --success: #1f8f5a;
+  --success: #14724a;
   --error: #c8283d;
-  --warning: #a87b00;
+  --warning: #8a6400;
 
   --model-openai: #6ee7a8;
   --model-gemini: #9cc5d8;

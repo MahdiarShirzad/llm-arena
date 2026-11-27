@@ -23,7 +23,7 @@ export type StatCardProps = {
 const sparkTone: Record<NonNullable<StatDelta["tone"]>, string> = {
   positive: "text-success",
   negative: "text-error",
-  neutral: "text-steel",
+  neutral: "text-muted-foreground",
 };
 
 function MiniSparkline({ points, tone }: { points: number[]; tone: string }) {
