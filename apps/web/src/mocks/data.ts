@@ -1357,3 +1357,125 @@ export const brochureDemo: BrochureDemo = {
     },
   ],
 };
+
+export type TemplateFilterTag =
+  | "Summarization"
+  | "Coding"
+  | "Writing"
+  | "Analysis"
+  | "Translation";
+
+export type LibraryTemplate = {
+  id: string;
+  title: string;
+  tags: string[];
+  systemPrompt: string;
+  userPrompt: string;
+  /** Human-readable relative time, e.g. "2 days ago" */
+  lastUsed: string;
+  usageCount: number;
+  pinned: boolean;
+};
+
+export const libraryTemplates: LibraryTemplate[] = [
+  {
+    id: "tpl_ticket_triage",
+    title: "Ticket triage",
+    tags: ["Analysis", "Support"],
+    systemPrompt:
+      "You are a support lead triaging an inbound ticket queue. Classify each ticket by product area, urgency and churn signal, then propose the shortest reply that resolves it. Never promise a fix you cannot verify.",
+    userPrompt:
+      "Triage these tickets and rank them by churn risk:\n{{tickets}}",
+    lastUsed: "2 hours ago",
+    usageCount: 148,
+    pinned: true,
+  },
+  {
+    id: "tpl_sql_tune",
+    title: "SQL performance tune",
+    tags: ["Coding", "Postgres"],
+    systemPrompt:
+      "You are a database performance engineer. Read the query and its EXPLAIN plan, identify the dominant cost, propose one index or rewrite, and state what could regress.",
+    userPrompt: "Query:\n{{query}}\n\nPlan:\n{{plan}}",
+    lastUsed: "yesterday",
+    usageCount: 96,
+    pinned: true,
+  },
+  {
+    id: "tpl_release_notes",
+    title: "Release notes",
+    tags: ["Writing", "Launch"],
+    systemPrompt:
+      "Write release notes a customer can skim in thirty seconds. Lead with the user-visible outcome, group by theme, keep each item to one sentence, and move internal refactors to a maintenance section.",
+    userPrompt: "Write notes for {{version}} from this changelog:\n{{changelog}}",
+    lastUsed: "3 days ago",
+    usageCount: 64,
+    pinned: false,
+  },
+  {
+    id: "tpl_exec_summary",
+    title: "Executive summary",
+    tags: ["Summarization", "Product"],
+    systemPrompt:
+      "Summarise for a VP who has ninety seconds. One sentence on what changed, three bullets on why it matters, and one line on the decision you need from them. No adjectives.",
+    userPrompt: "Summarise this doc:\n{{document}}",
+    lastUsed: "4 days ago",
+    usageCount: 57,
+    pinned: false,
+  },
+  {
+    id: "tpl_code_review",
+    title: "Skeptical code review",
+    tags: ["Coding", "Review"],
+    systemPrompt:
+      "Review this diff as a staff engineer who has been paged for it. Call out correctness bugs first, then failure modes under load, then naming. Skip style nits entirely.",
+    userPrompt: "Review this diff:\n{{diff}}",
+    lastUsed: "1 week ago",
+    usageCount: 212,
+    pinned: true,
+  },
+  {
+    id: "tpl_doc_translate",
+    title: "Docs localisation",
+    tags: ["Translation", "Docs"],
+    systemPrompt:
+      "Translate technical documentation into {{language}}. Keep code identifiers, CLI flags and product names verbatim, translate explanatory prose, and preserve markdown structure exactly.",
+    userPrompt: "Translate this page:\n{{markdown}}",
+    lastUsed: "1 week ago",
+    usageCount: 41,
+    pinned: false,
+  },
+  {
+    id: "tpl_incident_timeline",
+    title: "Incident timeline",
+    tags: ["Summarization", "SRE"],
+    systemPrompt:
+      "Turn a raw incident channel into a timeline a postmortem can use. Timestamps in UTC, one line per event, separate detection from mitigation, and end with the three open questions.",
+    userPrompt: "Build the timeline from this channel log:\n{{log}}",
+    lastUsed: "2 weeks ago",
+    usageCount: 23,
+    pinned: false,
+  },
+  {
+    id: "tpl_ab_test_readout",
+    title: "A/B test readout",
+    tags: ["Analysis", "Growth"],
+    systemPrompt:
+      "Interpret this experiment honestly. Report the effect size with its interval, state whether the test was powered, list the segments that moved most, and recommend ship, iterate or stop.",
+    userPrompt: "Read out this experiment:\n{{results}}",
+    lastUsed: "2 weeks ago",
+    usageCount: 18,
+    pinned: false,
+  },
+  {
+    id: "tpl_changelog_copy",
+    title: "Changelog to tweet",
+    tags: ["Writing", "Marketing"],
+    systemPrompt:
+      "Turn a changelog into three short posts: one plain, one for developers, one dry and funny. No hashtags, no exclamation marks, under 240 characters each.",
+    userPrompt: "Changelog entry:\n{{entry}}",
+    lastUsed: "3 weeks ago",
+    usageCount: 12,
+    pinned: false,
+  },
+];
