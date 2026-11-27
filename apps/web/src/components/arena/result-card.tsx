@@ -172,7 +172,7 @@ export function ResultCard({
   return (
     <Card
       className={cn(
-        "flex h-full flex-col gap-0 overflow-hidden border border-border/60 bg-surface/60 py-0 ring-0 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/40",
+        "relative flex h-full flex-col gap-0 overflow-hidden border border-border/60 bg-surface/60 py-0 ring-0 transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:border-border hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/40",
         isWinner &&
           "border-highlight/50 ring-1 ring-highlight/30 hover:border-highlight/70",
         className,
