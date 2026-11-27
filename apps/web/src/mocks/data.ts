@@ -1138,3 +1138,222 @@ export const judgeVerdict: JudgeVerdict = {
   "usage": { "input_tokens": 1841, "output_tokens": 612, "cost_usd": 0.00184 }
 }`,
 };
+
+export type BrochureTone = "Professional" | "Humorous";
+
+export type BrochureLinkType =
+  | "About"
+  | "Careers"
+  | "Pricing"
+  | "Product"
+  | "Blog"
+  | "Docs";
+
+export type BrochureLink = {
+  id: string;
+  label: string;
+  url: string;
+  type: BrochureLinkType;
+  relevant: boolean;
+};
+
+export type BrochureStepStatus = "done" | "active" | "pending";
+
+export type BrochureStep = {
+  id: number;
+  title: string;
+  detail: string;
+  status: BrochureStepStatus;
+};
+
+export type BrochureBlock =
+  | { kind: "heading"; level: 1 | 2; text: string }
+  | { kind: "paragraph"; text: string }
+  | { kind: "list"; items: string[] }
+  | { kind: "callout"; text: string };
+
+export type BrochureCallLogEntry = {
+  id: string;
+  call: string;
+  modelId: string;
+  tokensIn: number;
+  tokensOut: number;
+  latencyMs: number;
+  costUsd: number;
+};
+
+export type BrochureDemo = {
+  url: string;
+  tone: BrochureTone;
+  modelId: string;
+  pageTitle: string;
+  pageContent: string;
+  links: BrochureLink[];
+  steps: BrochureStep[];
+  blocks: BrochureBlock[];
+  callLog: BrochureCallLogEntry[];
+};
+
+export const brochureDemo: BrochureDemo = {
+  url: "https://cadencehq.com",
+  tone: "Professional",
+  modelId: "gemini-2.5-flash",
+  pageTitle: "Cadence — product analytics for engineering teams",
+  pageContent:
+    "Cadence turns product events into answers engineers can act on. Connect your warehouse, define a metric once, and every dashboard, alert and PR comment reads from the same definition. We support Snowflake, BigQuery and Postgres out of the box, keep all computation inside your own warehouse, and never copy raw events to our servers. Teams at 400+ companies use Cadence to catch regressions before release, measure activation without a data team, and retire the spreadsheet of SQL snippets that used to be their source of truth. Pricing is per seat with unlimited events; a 14-day trial needs no credit card. We are remote-first across 11 countries and hiring in platform, design and developer relations.",
+  steps: [
+    {
+      id: 1,
+      title: "Scrape page",
+      detail: "landing page · 812 tokens",
+      status: "done",
+    },
+    {
+      id: 2,
+      title: "Pick relevant links",
+      detail: "10 links → 5 relevant",
+      status: "done",
+    },
+    {
+      id: 3,
+      title: "Write brochure",
+      detail: "streaming · 1,846 tokens",
+      status: "active",
+    },
+  ],
+  links: [
+    {
+      id: "lnk_about",
+      label: "About Cadence",
+      url: "/about",
+      type: "About",
+      relevant: true,
+    },
+    {
+      id: "lnk_pricing",
+      label: "Pricing",
+      url: "/pricing",
+      type: "Pricing",
+      relevant: true,
+    },
+    {
+      id: "lnk_warehouse",
+      label: "Warehouse-native analytics",
+      url: "/product/warehouse",
+      type: "Product",
+      relevant: true,
+    },
+    {
+      id: "lnk_careers",
+      label: "Careers — we're hiring",
+      url: "/careers",
+      type: "Careers",
+      relevant: true,
+    },
+    {
+      id: "lnk_customers",
+      label: "Customer stories",
+      url: "/customers",
+      type: "Product",
+      relevant: true,
+    },
+    {
+      id: "lnk_blog",
+      label: "Blog: metrics that survive a reorg",
+      url: "/blog/metrics-reorg",
+      type: "Blog",
+      relevant: false,
+    },
+    {
+      id: "lnk_changelog",
+      label: "Changelog — v3.2",
+      url: "/changelog",
+      type: "Product",
+      relevant: false,
+    },
+    {
+      id: "lnk_docs",
+      label: "Docs: connecting BigQuery",
+      url: "/docs/bigquery",
+      type: "Docs",
+      relevant: false,
+    },
+    {
+      id: "lnk_security",
+      label: "Security & compliance",
+      url: "/security",
+      type: "Docs",
+      relevant: false,
+    },
+    {
+      id: "lnk_press",
+      label: "Press kit",
+      url: "/press",
+      type: "About",
+      relevant: false,
+    },
+  ],
+  blocks: [
+    { kind: "heading", level: 1, text: "Cadence" },
+    {
+      kind: "paragraph",
+      text: "Product analytics that runs inside your warehouse. Define a metric once and every dashboard, alert and pull request reads from the same definition.",
+    },
+    { kind: "heading", level: 2, text: "What it does" },
+    {
+      kind: "list",
+      items: [
+        "Connects to Snowflake, BigQuery and Postgres with read-only credentials.",
+        "Keeps computation in your warehouse — raw events never leave it.",
+        "Surfaces activation and regression signals next to the PR that caused them.",
+        "Retires the spreadsheet of one-off SQL that used to be the source of truth.",
+      ],
+    },
+    {
+      kind: "callout",
+      text: "Per seat pricing with unlimited events. A 14-day trial needs no credit card.",
+    },
+    { kind: "heading", level: 2, text: "Who it is for" },
+    {
+      kind: "list",
+      items: [
+        "Platform and product engineering teams that own their own metrics.",
+        "Companies with 400+ seats or 400+ employees already on Cadence.",
+        "Teams hiring across platform, design and developer relations.",
+      ],
+    },
+    {
+      kind: "paragraph",
+      text: "Remote-first across 11 countries, with a support model staffed by the engineers who build the product.",
+    },
+  ],
+  callLog: [
+    {
+      id: "call_1",
+      call: "fetch_page_content",
+      modelId: "gemini-2.5-flash",
+      tokensIn: 142,
+      tokensOut: 812,
+      latencyMs: 1240,
+      costUsd: 0.0024,
+    },
+    {
+      id: "call_2",
+      call: "select_relevant_links",
+      modelId: "gemini-2.5-flash",
+      tokensIn: 2860,
+      tokensOut: 486,
+      latencyMs: 980,
+      costUsd: 0.0021,
+    },
+    {
+      id: "call_3",
+      call: "generate_brochure",
+      modelId: "gpt-4o-mini",
+      tokensIn: 4312,
+      tokensOut: 1846,
+      latencyMs: 3120,
+      costUsd: 0.0018,
+    },
+  ],
+};
