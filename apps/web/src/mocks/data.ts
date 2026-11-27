@@ -1479,3 +1479,210 @@ export const libraryTemplates: LibraryTemplate[] = [
     pinned: false,
   },
 ];
+
+export type HistoryMode = "Compare" | "Judge" | "Brochure";
+
+export type HistoryRun = {
+  id: string;
+  title: string;
+  prompt: string;
+  mode: HistoryMode;
+  modelIds: string[];
+  winnerModelId?: string;
+  tokensIn: number;
+  tokensOut: number;
+  costUsd: number;
+  createdAt: string;
+  relativeDate: string;
+  status: RunStatus;
+};
+
+export const historyRuns: HistoryRun[] = [
+  {
+    id: "run_01",
+    title: "Multi-tenant rate limiter",
+    prompt: "Design a rate limiter for a multi-tenant API with burst traffic. It has to survive a Redis failover.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat", "llama3.2"],
+    winnerModelId: "gpt-4o-mini",
+    tokensIn: 1841,
+    tokensOut: 1727,
+    costUsd: 0.00232,
+    createdAt: "2026-11-26T09:42:00Z",
+    relativeDate: "2 hours ago",
+    status: "done",
+  },
+  {
+    id: "run_07",
+    title: "Judge: rate limiter answers",
+    prompt: "Score the rate limiter answers on a weighted rubric and name a winner.",
+    mode: "Judge",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat", "llama3.2"],
+    winnerModelId: "gpt-4o-mini",
+    tokensIn: 4210,
+    tokensOut: 912,
+    costUsd: 0.00184,
+    createdAt: "2026-11-26T09:47:00Z",
+    relativeDate: "2 hours ago",
+    status: "done",
+  },
+  {
+    id: "run_02",
+    title: "Attention, explained",
+    prompt: "Explain how transformer attention works to a staff engineer who has never trained a model.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat"],
+    winnerModelId: "gemini-2.5-flash",
+    tokensIn: 385,
+    tokensOut: 2085,
+    costUsd: 0.00297,
+    createdAt: "2026-11-25T16:08:00Z",
+    relativeDate: "yesterday",
+    status: "streaming",
+  },
+  {
+    id: "run_08",
+    title: "Brochure: cadencehq.com",
+    prompt: "Generate a professional brochure for https://cadencehq.com.",
+    mode: "Brochure",
+    modelIds: ["gemini-2.5-flash", "gpt-4o-mini"],
+    tokensIn: 7314,
+    tokensOut: 3144,
+    costUsd: 0.0063,
+    createdAt: "2026-11-25T11:20:00Z",
+    relativeDate: "yesterday",
+    status: "done",
+  },
+  {
+    id: "run_03",
+    title: "Postgres seq scan teardown",
+    prompt: "Refactor this Postgres query so it stops sequential-scanning 40M events.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat", "llama3.2"],
+    winnerModelId: "deepseek-chat",
+    tokensIn: 4693,
+    tokensOut: 2331,
+    costUsd: 0.00446,
+    createdAt: "2026-11-24T11:26:00Z",
+    relativeDate: "2 days ago",
+    status: "done",
+  },
+  {
+    id: "run_04",
+    title: "v2.4 release notes",
+    prompt: "Write release notes for v2.4: streaming judge mode, cost guardrails, and CSV export.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat", "llama3.2"],
+    tokensIn: 1073,
+    tokensOut: 1265,
+    costUsd: 0.00202,
+    createdAt: "2026-11-22T18:54:00Z",
+    relativeDate: "4 days ago",
+    status: "error",
+  },
+  {
+    id: "run_09",
+    title: "Judge: release note drafts",
+    prompt: "Pick the release notes a customer can skim fastest, and justify the pick.",
+    mode: "Judge",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat"],
+    winnerModelId: "gemini-2.5-flash",
+    tokensIn: 2980,
+    tokensOut: 744,
+    costUsd: 0.00141,
+    createdAt: "2026-11-22T19:02:00Z",
+    relativeDate: "4 days ago",
+    status: "done",
+  },
+  {
+    id: "run_05",
+    title: "Support ticket clustering",
+    prompt: "Cluster these 12 support tickets into themes and rank them by churn risk.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat", "llama3.2"],
+    winnerModelId: "gemini-2.5-flash",
+    tokensIn: 3755,
+    tokensOut: 1717,
+    costUsd: 0.00271,
+    createdAt: "2026-11-21T08:15:00Z",
+    relativeDate: "5 days ago",
+    status: "done",
+  },
+  {
+    id: "run_10",
+    title: "Brochure: northwind.dev",
+    prompt: "Generate a humorous brochure for https://northwind.dev.",
+    mode: "Brochure",
+    modelIds: ["gemini-2.5-flash"],
+    tokensIn: 5120,
+    tokensOut: 2210,
+    costUsd: 0.0041,
+    createdAt: "2026-11-20T15:40:00Z",
+    relativeDate: "6 days ago",
+    status: "done",
+  },
+  {
+    id: "run_06",
+    title: "Booking schema draft",
+    prompt: "Generate a Postgres schema for a multi-tenant booking system with waitlists.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat", "llama3.2"],
+    winnerModelId: "gpt-4o-mini",
+    tokensIn: 1411,
+    tokensOut: 2300,
+    costUsd: 0.0027,
+    createdAt: "2026-11-19T14:33:00Z",
+    relativeDate: "1 week ago",
+    status: "error",
+  },
+  {
+    id: "run_11",
+    title: "Idempotency key strategy",
+    prompt: "Compare idempotency key strategies for a payments API that retries webhooks.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat"],
+    winnerModelId: "gpt-4o-mini",
+    tokensIn: 2104,
+    tokensOut: 1300,
+    costUsd: 0.00184,
+    createdAt: "2026-11-18T10:02:00Z",
+    relativeDate: "1 week ago",
+    status: "done",
+  },
+  {
+    id: "run_12",
+    title: "On-call handbook outline",
+    prompt: "Outline an on-call handbook for a small platform team, including escalation paths.",
+    mode: "Compare",
+    modelIds: ["gpt-4o-mini", "deepseek-chat", "llama3.2"],
+    winnerModelId: "deepseek-chat",
+    tokensIn: 1620,
+    tokensOut: 980,
+    costUsd: 0.00061,
+    createdAt: "2026-11-17T07:47:00Z",
+    relativeDate: "1 week ago",
+    status: "done",
+  },
+];
+
+export type HistoryRunDetail = {
+  id: string;
+  title: string;
+  prompt: string;
+  systemPrompt: string;
+  mode: HistoryMode;
+  createdAt: string;
+  winnerModelId: string;
+  responses: ModelResponse[];
+};
+
+export const historyRunDetail: HistoryRunDetail = {
+  id: arenaDemo.id,
+  title: "Multi-tenant rate limiter",
+  prompt: arenaDemo.prompt,
+  systemPrompt: arenaDemo.systemPrompt,
+  mode: "Compare",
+  createdAt: "2026-11-26T09:42:00Z",
+  winnerModelId: arenaDemo.winnerModelId,
+  responses: arenaDemo.responses,
+};

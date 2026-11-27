@@ -41,10 +41,14 @@ export function JudgeConfig({
   const [activeCriteria, setActiveCriteria] = useState<JudgeCriterionId[]>(
     defaultActiveCriteria,
   );
-  const [weights, setWeights] = useState<Record<JudgeCriterionId, number>>(() =>
-    Object.fromEntries(
-      criteria.map((criterion) => [criterion.id, criterion.defaultWeight]),
-    ) as Record<JudgeCriterionId, number>,
+  const [weights, setWeights] = useState<Record<JudgeCriterionId, number>>(
+    () => ({
+      accuracy: 0.4,
+      clarity: 0.25,
+      conciseness: 0.15,
+      creativity: 0.1,
+      safety: 0.1,
+    }),
   );
   const [systemOpen, setSystemOpen] = useState(false);
   const [systemPrompt, setSystemPrompt] = useState(defaultSystemPrompt);

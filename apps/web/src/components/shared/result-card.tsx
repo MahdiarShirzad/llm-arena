@@ -15,7 +15,7 @@ import {
   TrophyIcon,
 } from "lucide-react";
 
-import { StatusPill } from "@/components/arena/status-pill";
+import { StatusPill } from "@/components/shared/status-pill";
 import { CodeBlock } from "@/components/shared/code-block";
 import { MetricPill } from "@/components/shared/metric-pill";
 import { ModelBadge } from "@/components/shared/model-badge";

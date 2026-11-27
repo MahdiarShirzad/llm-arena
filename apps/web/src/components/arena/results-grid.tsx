@@ -3,7 +3,7 @@
 import { useRef, useState, type UIEvent } from "react";
 import { TrophyIcon } from "lucide-react";
 
-import { ResultCard } from "@/components/arena/result-card";
+import { ResultCard } from "@/components/shared/result-card";
 import { cn } from "@/lib/utils";
 import type { Model, ModelResponse } from "@/mocks/data";
 
