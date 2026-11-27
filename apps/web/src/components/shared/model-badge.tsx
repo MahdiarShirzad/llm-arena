@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import type { ModelProvider } from "@/mocks/data";
 
-const providerDot: Record<ModelProvider, string> = {
+export const providerDotClass: Record<ModelProvider, string> = {
   openai: "bg-model-openai",
   gemini: "bg-model-gemini",
   deepseek: "bg-model-deepseek",
@@ -37,7 +37,10 @@ export function ModelBadge({
     >
       <span
         aria-hidden
-        className={cn("size-1.5 shrink-0 rounded-full", providerDot[provider])}
+        className={cn(
+          "size-1.5 shrink-0 rounded-full",
+          providerDotClass[provider],
+        )}
       />
       <span className="font-mono text-[11px] font-medium text-foreground">
         {name ?? providerLabel[provider]}
