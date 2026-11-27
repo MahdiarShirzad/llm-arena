@@ -1686,3 +1686,79 @@ export const historyRunDetail: HistoryRunDetail = {
   winnerModelId: arenaDemo.winnerModelId,
   responses: arenaDemo.responses,
 };
+
+export type DashboardRange = "7d" | "30d" | "90d";
+
+export type DashboardSparkline = {
+  runs: number[];
+  tokens: number[];
+  cost: number[];
+  latency: number[];
+};
+
+export const dashboardSparkline: DashboardSparkline = {
+  runs: [9, 12, 8, 15, 11, 16, 22],
+  tokens: [96, 134, 88, 172, 121, 179, 241],
+  cost: [0.42, 0.58, 0.36, 0.74, 0.51, 0.77, 1.03],
+  latency: [3120, 3040, 3260, 2980, 2870, 2690, 2610],
+};
+
+export type DashboardLatencyPoint = {
+  /** Short label for the x axis */
+  label: string;
+  /** Latency per model, in the order of `models` */
+  values: number[];
+};
+
+export const dashboardLatencySeries: DashboardLatencyPoint[] = [
+  { label: "Nov 13", values: [3180, 2720, 5410, 9120] },
+  { label: "Nov 15", values: [3020, 2640, 5280, 8860] },
+  { label: "Nov 17", values: [3260, 2790, 5620, 9310] },
+  { label: "Nov 19", values: [2980, 2610, 5170, 8740] },
+  { label: "Nov 21", values: [3110, 2480, 5060, 8980] },
+  { label: "Nov 23", values: [2890, 2520, 4880, 8610] },
+  { label: "Nov 25", values: [2740, 2410, 4710, 8420] },
+  { label: "Nov 26", values: [2610, 2310, 4620, 8210] },
+];
+
+export type DashboardModelTokens = {
+  modelId: string;
+  tokensIn: number;
+  tokensOut: number;
+};
+
+export const dashboardModelTokens: DashboardModelTokens[] = [
+  { modelId: "gpt-4o-mini", tokensIn: 268_000, tokensOut: 344_000 },
+  { modelId: "gemini-2.5-flash", tokensIn: 241_000, tokensOut: 307_000 },
+  { modelId: "deepseek-chat", tokensIn: 152_000, tokensOut: 232_000 },
+  { modelId: "llama3.2", tokensIn: 121_000, tokensOut: 175_000 },
+];
+
+export type DashboardWinRate = {
+  modelId: string;
+  wins: number;
+  runs: number;
+  /** 0–100 */
+  winRate: number;
+};
+
+export const dashboardWinRates: DashboardWinRate[] = [
+  { modelId: "gpt-4o-mini", wins: 54, runs: 58, winRate: 74 },
+  { modelId: "gemini-2.5-flash", wins: 27, runs: 41, winRate: 61 },
+  { modelId: "deepseek-chat", wins: 11, runs: 22, winRate: 48 },
+  { modelId: "llama3.2", wins: 4, runs: 17, winRate: 23 },
+];
+
+export type DashboardInsight = {
+  cheapestModelId: string;
+  fastestModelId: string;
+  title: string;
+  body: string;
+};
+
+export const dashboardInsight: DashboardInsight = {
+  cheapestModelId: "llama3.2",
+  fastestModelId: "gemini-2.5-flash",
+  title: "Cheapest vs fastest",
+  body: "llama3.2 is free to run locally but takes three times as long to first token. gemini-2.5-flash is the fastest paid model at $0.30 per 1M input tokens, and it wins 6 of 10 runs — the best cost per accepted answer in this workspace.",
+};
