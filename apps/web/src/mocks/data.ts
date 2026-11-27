@@ -873,3 +873,268 @@ export const dashboardStatsSeries: DashboardStatsSeries = {
   usage: usageSeries,
   modelUsage,
 };
+
+export type JudgeCriterionId =
+  | "accuracy"
+  | "clarity"
+  | "conciseness"
+  | "creativity"
+  | "safety";
+
+export type JudgeCriterion = {
+  id: JudgeCriterionId;
+  label: string;
+  description: string;
+  /** Share of the total score, 0–1 */
+  defaultWeight: number;
+};
+
+export const judgeCriteria: JudgeCriterion[] = [
+  {
+    id: "accuracy",
+    label: "Accuracy",
+    description: "Correct claims, no confident errors.",
+    defaultWeight: 0.4,
+  },
+  {
+    id: "clarity",
+    label: "Clarity",
+    description: "Easy to follow on one read.",
+    defaultWeight: 0.25,
+  },
+  {
+    id: "conciseness",
+    label: "Conciseness",
+    description: "No padding, no restated prompt.",
+    defaultWeight: 0.15,
+  },
+  {
+    id: "creativity",
+    label: "Creativity",
+    description: "Useful angles the prompt did not ask for.",
+    defaultWeight: 0.1,
+  },
+  {
+    id: "safety",
+    label: "Safety",
+    description: "Avoids risky or misleading guidance.",
+    defaultWeight: 0.1,
+  },
+];
+
+export type JudgeSourceAnswer = {
+  modelId: string;
+  answer: string;
+  tokenCount: number;
+  included: boolean;
+};
+
+export const judgeSourceAnswers: JudgeSourceAnswer[] = [
+  {
+    modelId: "gpt-4o-mini",
+    tokenCount: 386,
+    included: true,
+    answer:
+      "Use a token bucket per tenant and route, refilled lazily from the elapsed timestamp so idle tenants cost nothing. Keep burst capacity separate from the steady refill rate, and make the read-refill-decrement step atomic with a single Lua script.",
+  },
+  {
+    modelId: "gemini-2.5-flash",
+    tokenCount: 512,
+    included: true,
+    answer:
+      "Two tiers keeps the failure modes small: a coarse limiter at the gateway per tenant, then a per-route limiter in the service. Store bucket state in Redis with a TTL of the refill window so abandoned tenants expire on their own.",
+  },
+  {
+    modelId: "deepseek-chat",
+    tokenCount: 471,
+    included: true,
+    answer:
+      "Start with a leaky bucket if you care about smoothing downstream load, otherwise token bucket is easier to explain to customers. Keep counters in memory per instance and reconcile through Redis only near the limit.",
+  },
+  {
+    modelId: "llama3.2",
+    tokenCount: 358,
+    included: true,
+    answer:
+      "A fixed window counter is the simplest option: key by tenant and minute, increment in Redis, expire after 120 seconds. It allows bursts at window boundaries, so add a sliding check if fairness matters.",
+  },
+];
+
+export type JudgeScore = {
+  modelId: string;
+  /** Weighted total, 0–10 */
+  total: number;
+  /** Per-criterion score, 0–10 */
+  criteria: Record<JudgeCriterionId, number>;
+  strengths: string[];
+  weaknesses: string[];
+  reasoning: string;
+};
+
+export type JudgeRubricWeight = {
+  criterionId: JudgeCriterionId;
+  label: string;
+  weight: number;
+};
+
+export type JudgeVerdict = {
+  id: string;
+  judgeModelId: string;
+  prompt: string;
+  rubric: JudgeRubricWeight[];
+  scores: JudgeScore[];
+  winnerModelId: string;
+  confidence: number;
+  durationMs: number;
+  costUsd: number;
+  rawJson: string;
+};
+
+export const judgeVerdict: JudgeVerdict = {
+  id: "jdg_01HZXQ4M8K",
+  judgeModelId: "gemini-2.5-flash",
+  prompt:
+    "Design a rate limiter for a multi-tenant API with burst traffic. It has to survive a Redis failover and stay fair across tenants.",
+  confidence: 0.86,
+  durationMs: 3120,
+  costUsd: 0.00184,
+  rubric: [
+    { criterionId: "accuracy", label: "Accuracy", weight: 0.4 },
+    { criterionId: "clarity", label: "Clarity", weight: 0.25 },
+    { criterionId: "conciseness", label: "Conciseness", weight: 0.15 },
+    { criterionId: "creativity", label: "Creativity", weight: 0.1 },
+    { criterionId: "safety", label: "Safety", weight: 0.1 },
+  ],
+  winnerModelId: "gpt-4o-mini",
+  scores: [
+    {
+      modelId: "gpt-4o-mini",
+      total: 8.6,
+      criteria: {
+        accuracy: 8.6,
+        clarity: 9,
+        conciseness: 8.2,
+        creativity: 7.4,
+        safety: 9.4,
+      },
+      strengths: [
+        "Atomic refill is the correct primitive for burst traffic.",
+        "Separates burst capacity from the steady rate, which is the part teams usually get wrong.",
+        "Names the concrete mechanism (single Lua script) instead of hand-waving.",
+      ],
+      weaknesses: [
+        "Does not address what happens when Redis is unavailable during failover.",
+        "No mention of fairness between routes of the same tenant.",
+      ],
+      reasoning:
+        "The answer states the design in the order an implementer needs it: bucket key, lazy refill, then atomicity. Its trade-off between burst size and refill rate is the detail that separates a working limiter from a naive one. It loses marks only for skipping the failover behaviour the prompt explicitly asked about.",
+    },
+    {
+      modelId: "deepseek-chat",
+      total: 8.57,
+      criteria: {
+        accuracy: 9,
+        clarity: 7.8,
+        conciseness: 8.8,
+        creativity: 8,
+        safety: 9,
+      },
+      strengths: [
+        "Introduces in-memory counters with Redis reconciliation near the limit.",
+        "Explicit fail-open for paid tenants, fail-closed for free tiers.",
+        "Correctly distinguishes leaky bucket from token bucket.",
+      ],
+      weaknesses: [
+        "The in-memory fast path needs a staleness bound it never states.",
+        "Opening sentence delays the actual recommendation.",
+      ],
+      reasoning:
+        "Technically the strongest answer: it names the two failure modes that dominate real deployments, Redis round-trip cost and failover policy, and gives a defensible default for each. It ranks just below the winner because the same ideas take longer to extract and the in-memory fast path is under-specified.",
+    },
+    {
+      modelId: "gemini-2.5-flash",
+      total: 8.55,
+      criteria: {
+        accuracy: 8.2,
+        clarity: 9.4,
+        conciseness: 7.6,
+        creativity: 8.6,
+        safety: 9.2,
+      },
+      strengths: [
+        "The two-tier gateway/service split is easy to reason about and to operate.",
+        "TTL equal to the refill window is a clean way to expire idle tenants.",
+      ],
+      weaknesses: [
+        "Twice as many words as the winner for the same core design.",
+        "Emphasises response headers over the limiter itself.",
+      ],
+      reasoning:
+        "The clearest read of the four and the best structure for a design review. It trades the winner's precision for breadth: more operational advice, less on the exact atomic step. A good answer that would need one follow-up question before implementation.",
+    },
+    {
+      modelId: "llama3.2",
+      total: 7.32,
+      criteria: {
+        accuracy: 6.8,
+        clarity: 7.2,
+        conciseness: 8.4,
+        creativity: 6.6,
+        safety: 8.8,
+      },
+      strengths: [
+        "Short and honest about the trade-off it is making.",
+        "Fixed windows are genuinely the simplest thing that works.",
+      ],
+      weaknesses: [
+        "Fixed windows ignore the burst problem the prompt is about.",
+        "No mention of failover behaviour at all.",
+        "Does not explain why the boundary burst happens.",
+      ],
+      reasoning:
+        "Readable and appropriately brief, but it answers an easier question than the one asked. A fixed window is a reasonable starting point, yet the prompt is specifically about burst traffic and Redis failover, and neither is addressed in a way that would survive a design review.",
+    },
+  ],
+  rawJson: `{
+  "verdict_id": "jdg_01HZXQ4M8K",
+  "judge_model": "gemini-2.5-flash",
+  "prompt_id": "run_01",
+  "rubric": {
+    "accuracy": 0.4,
+    "clarity": 0.25,
+    "conciseness": 0.15,
+    "creativity": 0.1,
+    "safety": 0.1
+  },
+  "scores": [
+    {
+      "model": "gpt-4o-mini",
+      "total": 8.6,
+      "criteria": { "accuracy": 8.6, "clarity": 9.0, "conciseness": 8.2, "creativity": 7.4, "safety": 9.4 },
+      "flags": ["missing_failover_policy"]
+    },
+    {
+      "model": "deepseek-chat",
+      "total": 8.57,
+      "criteria": { "accuracy": 9.0, "clarity": 7.8, "conciseness": 8.8, "creativity": 8.0, "safety": 9.0 },
+      "flags": ["unspecified_staleness_bound"]
+    },
+    {
+      "model": "gemini-2.5-flash",
+      "total": 8.55,
+      "criteria": { "accuracy": 8.2, "clarity": 9.4, "conciseness": 7.6, "creativity": 8.6, "safety": 9.2 },
+      "flags": ["verbose"]
+    },
+    {
+      "model": "llama3.2",
+      "total": 7.32,
+      "criteria": { "accuracy": 6.8, "clarity": 7.2, "conciseness": 8.4, "creativity": 6.6, "safety": 8.8 },
+      "flags": ["does_not_address_prompt"]
+    }
+  ],
+  "winner": "gpt-4o-mini",
+  "confidence": 0.86,
+  "reasoning": "Correct primitive, stated in implementation order, with the burst/refill split made explicit.",
+  "usage": { "input_tokens": 1841, "output_tokens": 612, "cost_usd": 0.00184 }
+}`,
+};

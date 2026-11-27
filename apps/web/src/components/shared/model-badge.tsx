@@ -8,6 +8,13 @@ export const providerDotClass: Record<ModelProvider, string> = {
   ollama: "bg-model-ollama",
 };
 
+export const providerColorVar: Record<ModelProvider, string> = {
+  openai: "var(--model-openai)",
+  gemini: "var(--model-gemini)",
+  deepseek: "var(--model-deepseek)",
+  ollama: "var(--model-ollama)",
+};
+
 const providerLabel: Record<ModelProvider, string> = {
   openai: "OpenAI",
   gemini: "Gemini",

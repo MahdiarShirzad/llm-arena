@@ -1,4 +1,5 @@
 import { CopyIcon } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +14,8 @@ export type CodeBlockProps = {
   language?: string;
   filename?: string;
   className?: string;
+  /** Optional pre-highlighted content; falls back to the plain `code` text. */
+  children?: ReactNode;
 };
 
 export function CodeBlock({
@@ -20,6 +23,7 @@ export function CodeBlock({
   language,
   filename,
   className,
+  children,
 }: CodeBlockProps) {
   const caption = filename ?? language ?? "code";
 
@@ -51,7 +55,7 @@ export function CodeBlock({
       </div>
       <pre className="max-h-80 overflow-auto p-4 text-left">
         <code className="font-mono text-xs leading-relaxed whitespace-pre text-foreground">
-          {code}
+          {children ?? code}
         </code>
       </pre>
     </div>
