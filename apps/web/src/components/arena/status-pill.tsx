@@ -7,25 +7,24 @@ const statusLabel: Record<RunStatus, string> = {
   error: "Error",
 };
 
+// Labels stay on foreground so they keep AA contrast in both themes; the state
+// colour lives in the tinted border and dot.
 const statusTone: Record<
   RunStatus,
-  { dot: string; text: string; border: string; background: string }
+  { dot: string; border: string; background: string }
 > = {
   streaming: {
     dot: "bg-steel motion-safe:animate-pulse",
-    text: "text-steel",
     border: "border-steel/40",
     background: "bg-steel/10",
   },
   done: {
     dot: "bg-success",
-    text: "text-success",
     border: "border-success/30",
     background: "bg-success/10",
   },
   error: {
     dot: "bg-error",
-    text: "text-error",
     border: "border-error/30",
     background: "bg-error/10",
   },
@@ -42,10 +41,9 @@ export function StatusPill({ status, className }: StatusPillProps) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 items-center gap-1.5 rounded-full border px-2 font-mono text-[10px] tracking-[0.08em] uppercase",
+        "inline-flex h-6 items-center gap-1.5 rounded-full border px-2 font-mono text-[10px] tracking-[0.08em] text-foreground uppercase",
         tone.border,
         tone.background,
-        tone.text,
         className,
       )}
     >

@@ -25,7 +25,10 @@ export function ArenaView() {
             <h2 className="text-sm font-medium text-foreground">Results</h2>
             <p className="font-mono text-[10px] tracking-[0.14em] text-muted-foreground uppercase">
               {arenaDemo.id} · {arenaDemo.responses.length} models ·{" "}
-              {winner?.name ?? "no winner"} leads
+              <span className="tracking-normal text-foreground/70 normal-case">
+                {winner?.name ?? "no winner"}
+              </span>{" "}
+              leads
             </p>
           </div>
           <span className="inline-flex items-center gap-1.5 rounded-full border border-highlight/30 bg-highlight/10 px-2 py-1 font-mono text-[10px] text-foreground">
