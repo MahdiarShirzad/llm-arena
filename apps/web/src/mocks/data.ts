@@ -1762,3 +1762,75 @@ export const dashboardInsight: DashboardInsight = {
   title: "Cheapest vs fastest",
   body: "llama3.2 is free to run locally but takes three times as long to first token. gemini-2.5-flash is the fastest paid model at $0.30 per 1M input tokens, and it wins 6 of 10 runs — the best cost per accepted answer in this workspace.",
 };
+
+export type ProviderStatus = "connected" | "not_configured" | "unreachable";
+
+export type ProviderSetting = {
+  provider: ModelProvider;
+  label: string;
+  enabled: boolean;
+  baseUrl: string;
+  /** Masked for display; Ollama needs no key. */
+  apiKeyMasked: string | null;
+  modelName: string;
+  status: ProviderStatus;
+  note?: string;
+};
+
+export const providerSettings: ProviderSetting[] = [
+  {
+    provider: "openai",
+    label: "OpenAI",
+    enabled: true,
+    baseUrl: "https://api.openai.com/v1",
+    apiKeyMasked: "sk-••••••••••••4f2a",
+    modelName: "gpt-4o-mini",
+    status: "connected",
+    note: "Key verified 3 minutes ago",
+  },
+  {
+    provider: "gemini",
+    label: "Gemini",
+    enabled: true,
+    baseUrl: "https://generativelanguage.googleapis.com/v1beta",
+    apiKeyMasked: "AIza••••••••••7c1",
+    modelName: "gemini-2.5-flash",
+    status: "connected",
+    note: "1M context window available",
+  },
+  {
+    provider: "deepseek",
+    label: "DeepSeek",
+    enabled: true,
+    baseUrl: "https://api.deepseek.com",
+    apiKeyMasked: "sk-••••••••••••9b3e",
+    modelName: "deepseek-chat",
+    status: "unreachable",
+    note: "Last attempt timed out after 10s",
+  },
+  {
+    provider: "ollama",
+    label: "Ollama",
+    enabled: false,
+    baseUrl: "http://localhost:11434",
+    apiKeyMasked: null,
+    modelName: "llama3.2",
+    status: "not_configured",
+    note: "No API key needed — runs on this machine",
+  },
+];
+
+export type SettingsDefaults = {
+  systemPrompt: string;
+  temperature: number;
+  maxTokens: string;
+  modelIds: string[];
+};
+
+export const settingsDefaults: SettingsDefaults = {
+  systemPrompt:
+    "You are a staff platform engineer. Answer in short paragraphs, then one small code snippet. Prefer concrete trade-offs over generic advice.",
+  temperature: 0.7,
+  maxTokens: "1024",
+  modelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat"],
+};
