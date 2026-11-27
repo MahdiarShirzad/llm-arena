@@ -49,7 +49,8 @@ pnpm build
 
 ## Current foundation
 
-- `/` Arena, `/judge`, `/brochure`, `/templates`, `/history`, `/dashboard`, `/settings` are placeholders that only render `PageHeader` and `EmptyState`.
+- `/` Arena is built: composer (system prompt, prompt, templates, model chips, controls), summary bar, responsive results grid of `ResultCard`s, and a dev-only UI states preview. `/judge`, `/brochure`, `/templates`, `/history`, `/dashboard`, `/settings` are still placeholders that only render `PageHeader` and `EmptyState`.
 - Shell: `AppShell` (collapsible sidebar, mobile `Sheet`, sticky `TopBar`, theme toggle, static avatar).
 - Shared primitives: `PageHeader`, `ModelBadge`, `StatCard`, `EmptyState`, `StreamingCursor`, `MetricPill`, `CodeBlock`.
+- Arena feature components live in `src/components/arena`; the hand-written run they render is `arenaDemo` in `src/mocks/data.ts`.
 - Fonts: Inter (`--font-inter`) and JetBrains Mono (`--font-jetbrains-mono`) loaded in `src/app/layout.tsx`.
