@@ -26,6 +26,10 @@ import {
   models,
 } from "@/mocks/data";
 
+// This route reads its id from the URL before rendering, so it opts out of
+// the instant-shell requirement rather than streaming a placeholder.
+export const instant = false;
+
 export function generateStaticParams() {
   return historyRuns.map((run) => ({ id: run.id }));
 }
