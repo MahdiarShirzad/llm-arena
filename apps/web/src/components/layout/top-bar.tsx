@@ -1,6 +1,7 @@
 "use client";
 
 import { MenuIcon } from "lucide-react";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import { navItemForPath } from "@/components/layout/nav-items";
@@ -25,6 +26,14 @@ export function TopBar({ onOpenMobile }: { onOpenMobile: () => void }) {
       </Button>
 
       <div className="flex min-w-0 flex-1 items-center gap-2">
+        <Image
+          src="/logo.png"
+          alt="LLM Arena"
+          width={20}
+          height={20}
+          priority
+          className="size-5 shrink-0 rounded-md ring-1 ring-border/40 lg:hidden"
+        />
         <span className="hidden font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase sm:inline">
           LLM Arena
         </span>

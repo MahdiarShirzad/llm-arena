@@ -1,6 +1,7 @@
 "use client";
 
-import { PanelLeftCloseIcon, PanelLeftOpenIcon, SwordsIcon } from "lucide-react";
+import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -29,9 +30,14 @@ function ArenaMark({ compact = false }: { compact?: boolean }) {
       )}
       aria-label="LLM Arena home"
     >
-      <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-highlight text-on-highlight shadow-[0_0_18px_-6px_var(--highlight)]">
-        <SwordsIcon className="size-4" strokeWidth={2.25} />
-      </span>
+      <Image
+        src="/logo.png"
+        alt=""
+        width={28}
+        height={28}
+        priority
+        className="size-7 shrink-0 rounded-lg ring-1 ring-border/40"
+      />
       {!compact && (
         <span className="truncate text-sm font-semibold tracking-tight text-foreground">
           LLM Arena
