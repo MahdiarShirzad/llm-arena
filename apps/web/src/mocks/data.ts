@@ -67,12 +67,20 @@ export type ModelMetrics = {
   tokensPerSecond: number;
 };
 
+export type ResponseCodeSample = {
+  language: string;
+  filename?: string;
+  code: string;
+};
+
 export type ModelResponse = {
   modelId: string;
   response: string;
   metrics: ModelMetrics;
   status: RunStatus;
   error?: string;
+  /** Optional snippet rendered under the prose in a result card. */
+  code?: ResponseCodeSample;
 };
 
 export type ArenaRun = {
@@ -744,6 +752,113 @@ export const modelUsage: ModelUsage[] = [
     tokens: 296_000,
     avgLatencyMs: 8940,
     costUsd: 0,
+  },
+];
+
+export type ArenaSummaryItem = {
+  id: "fastest" | "cheapest" | "tokens";
+  label: string;
+  value: string;
+  hint: string;
+};
+
+export type ArenaDemo = {
+  id: string;
+  prompt: string;
+  systemPrompt: string;
+  selectedModelIds: string[];
+  winnerModelId: string;
+  responses: ModelResponse[];
+};
+
+/** The hand-written run shown on the Arena page: one done, one streaming, one error. */
+export const arenaDemo: ArenaDemo = {
+  id: "run_01",
+  prompt:
+    "Design a rate limiter for a multi-tenant API with burst traffic. It has to survive a Redis failover and stay fair across tenants.",
+  systemPrompt:
+    "You are a staff platform engineer. Answer in short paragraphs, then one small code snippet. Prefer concrete trade-offs over generic advice.",
+  selectedModelIds: ["gpt-4o-mini", "gemini-2.5-flash", "deepseek-chat"],
+  winnerModelId: "gpt-4o-mini",
+  responses: [
+    {
+      modelId: "gpt-4o-mini",
+      status: "done",
+      response:
+        "Use a token bucket per tenant and route, refilled lazily from the elapsed timestamp instead of a cron job, so idle tenants cost nothing.\n\nKeep burst capacity separate from the steady refill rate. A tenant gets 60 requests a minute and a burst of 20; a noisy neighbour can drain its own bucket without touching anyone else's.\n\nThe read-refill-decrement step has to be atomic. One Lua script gives you that without a distributed lock, and it keeps the hot path to a single Redis round trip.",
+      code: {
+        language: "typescript",
+        filename: "rate-limit.ts",
+        code: [
+          "const { allowed, remaining } = await redis.eval(",
+          "  TOKEN_BUCKET_LUA,",
+          "  1,",
+          "  `bucket:${tenantId}:${route}`,",
+          "  capacity, refillPerSecond, Date.now(),",
+          ");",
+          "",
+          "if (!allowed) {",
+          '  reply.header("Retry-After", Math.ceil((1 - remaining) / refillPerSecond));',
+          '  return reply.code(429).send({ error: "rate_limited" });',
+          "}",
+        ].join("\n"),
+      },
+      metrics: {
+        latencyMs: 2840,
+        tokensIn: 412,
+        tokensOut: 386,
+        costUsd: 0.00029,
+        tokensPerSecond: 71.4,
+      },
+    },
+    {
+      modelId: "gemini-2.5-flash",
+      status: "streaming",
+      response:
+        "Two tiers keeps the failure modes small: a coarse limiter at the gateway per tenant, then a per-route limiter inside the service that owns the resource.\n\nStore bucket state in Redis with a TTL equal to the refill window so abandoned tenants expire on their own. On failover, fail open for paid plans and closed for free ones — the blast radius is a billing conversation rather than an outage.\n\nEmit the remaining budget and reset time on every response so clients can back off",
+      metrics: {
+        latencyMs: 2310,
+        tokensIn: 405,
+        tokensOut: 512,
+        costUsd: 0.0014,
+        tokensPerSecond: 68.2,
+      },
+    },
+    {
+      modelId: "deepseek-chat",
+      status: "error",
+      response: "",
+      error:
+        "Stream ended before the first token (upstream 503). The request was retried twice with backoff.",
+      metrics: {
+        latencyMs: 30_000,
+        tokensIn: 398,
+        tokensOut: 0,
+        costUsd: 0,
+        tokensPerSecond: 0,
+      },
+    },
+  ],
+};
+
+export const arenaSummary: ArenaSummaryItem[] = [
+  {
+    id: "fastest",
+    label: "Fastest",
+    value: "2.31s",
+    hint: "gemini-2.5-flash · first token",
+  },
+  {
+    id: "cheapest",
+    label: "Cheapest",
+    value: "$0.00029",
+    hint: "gpt-4o-mini · 386 output tokens",
+  },
+  {
+    id: "tokens",
+    label: "Most tokens",
+    value: "512",
+    hint: "gemini-2.5-flash · output",
   },
 ];
 
